@@ -1,0 +1,13 @@
+server:
+  port: 9103
+
+spring:
+  application:
+    name: zero-trust-policy
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false
+
+# 数据库、Redis 配置...

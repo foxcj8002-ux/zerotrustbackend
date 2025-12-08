@@ -1,0 +1,33 @@
+server:
+    port: 8080
+    spring:
+        application:
+          name: zero-trust-gateway
+
+        cloud:
+          nacos:
+            discovery:
+              server-addr: 47.120.25.166:8001
+              ip: 10.11.45.116
+            config:
+              server-addr: 47.120.25.166:8001
+#              ip: 10.11.45.116
+              file-extension: yaml
+
+          gateway:
+            routes:
+              - id: zero-trust-identity
+                uri: lb://zero-trust-identity
+                predicates:
+                  - Path=/identity/**
+
+              - id: zero-trust-policy
+                uri: lb://zero-trust-policy
+                predicates:
+                  - Path=/policy/**
+
+      management:
+        endpoints:
+          web:
+            exposure:
+              include: '*'

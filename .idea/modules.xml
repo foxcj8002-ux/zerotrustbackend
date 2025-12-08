@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-collecting/zero-trust-collecting.iml" filepath="$PROJECT_DIR$/zero-trust-collecting/zero-trust-collecting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-common/zero-trust-common.iml" filepath="$PROJECT_DIR$/zero-trust-common/zero-trust-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-gateway/zero-trust-gateway.iml" filepath="$PROJECT_DIR$/zero-trust-gateway/zero-trust-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-identity/zero-trust-identity.iml" filepath="$PROJECT_DIR$/zero-trust-identity/zero-trust-identity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-monitoring/zero-trust-monitoring.iml" filepath="$PROJECT_DIR$/zero-trust-monitoring/zero-trust-monitoring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-policy/zero-trust-policy.iml" filepath="$PROJECT_DIR$/zero-trust-policy/zero-trust-policy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zero-trust-trusteval/zero-trust-trusteval.iml" filepath="$PROJECT_DIR$/zero-trust-trusteval/zero-trust-trusteval.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,11 @@
+server:
+  port: 9101
+
+spring:
+  application:
+    name: zero-trust-identity
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false

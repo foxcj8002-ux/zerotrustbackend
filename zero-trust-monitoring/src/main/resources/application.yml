@@ -1,0 +1,7 @@
+server:
+  port: 9102
+spring:
+  application:
+    name: zero-trust-monitoring
+
+# 数据库、Redis 配置...

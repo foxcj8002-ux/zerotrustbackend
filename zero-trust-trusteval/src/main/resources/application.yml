@@ -1,0 +1,8 @@
+server:
+  port: 9104
+
+spring:
+  application:
+    name: zero-trust-trusteval
+
+# 数据库、Redis 配置...

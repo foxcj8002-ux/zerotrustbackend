@@ -1,0 +1,8 @@
+server:
+  port: 9100
+
+spring:
+  application:
+    name: zero-trust-collecting
+
+# 数据库、Redis 配置...
