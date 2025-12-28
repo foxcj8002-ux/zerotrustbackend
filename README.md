@@ -4,7 +4,7 @@
 
 # 一、Git 协作与远程开发规范
 
-> - 项目代码托管在 **Git 私有仓库（main 分支）**  
+> - 项目代码托管在 **Git 私有仓库（master 分支）**  
 > - 使用 **IntelliJ IDEA 2025 Ultimate 版的 Remote Development** 功能  
 > - **所有成员连接同一台项目组公用 Linux 服务器**  （jdk：17.0.17 ；maven：3.8.7）
 > - **代码拉取、编译在远程服务器完成**  
@@ -26,7 +26,7 @@
 
 1. **短期 Feature 分支开发**  
    - 一个功能 / 一个 Bug / 一个任务 = 一个分支  
-   - 合并进 main 后立即删除
+   - 合并进 master 后立即删除
 2. **模块责任制**  
    - 原则上只修改自己负责的微服务
    - 修改 `zero-trust-common` 等公共模块时，**在提交信息中明确说明增减了哪些**
@@ -66,7 +66,7 @@ git clone <repo-url>
 cd <repo-folder>
 ```
 
-### 4.3 确认 main 分支
+### 4.3 确认 master 分支
 
 ```bash
 git checkout main
@@ -77,7 +77,7 @@ git pull origin main
 
 ## 5. 标准开发流程（远程 Feature 开发）
 
-### Step 1：开始任务前，同步 main
+### Step 1：开始任务前，同步 master
 
 ```bash
 git checkout main
@@ -86,7 +86,7 @@ git pull origin main
 
 ---
 
-### Step 2：从 main 创建 Feature 分支
+### Step 2：从 master 创建 Feature 分支
 
 ```bash
 git checkout -b feature/identity-login（命名原则如上述3.中分支命名规范）
@@ -142,7 +142,7 @@ git commit -m "chore(common): add token dto"
 
 ---
 
-### Step 7：合并回 main
+### Step 7：合并回 master
 
 ```bash
 # 1. 切回 main 并同步
@@ -175,7 +175,7 @@ git branch -d feature/identity-login
 
 ------
 
-### 2.1 父 POM（`pom.xml`）
+### 2.1 父 POM
 
 **作用：**
 
