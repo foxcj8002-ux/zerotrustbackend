@@ -9,6 +9,6 @@ public class SecurityContext {
     private DeviceContext deviceContext; //设备上下文
     private NetworkContext networkContext; //网络上下文
     private BehaviorContext behaviorContext;//行为上下文
-    private EnvironmentContext environmentContext;//环境上下文
+    private EnvironmentRiskContext environmentContext;//环境上下文
     private SessionContext sessionContext;//会话上下文
 }

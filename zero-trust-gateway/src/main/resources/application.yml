@@ -1,33 +1,68 @@
 server:
-    port: 8080
-    spring:
-        application:
-          name: zero-trust-gateway
+  port: 8002
+  address: 0.0.0.0
 
-        cloud:
-          nacos:
-            discovery:
-              server-addr: 47.120.25.166:8001
-              ip: 10.11.45.116
-            config:
-              server-addr: 47.120.25.166:8001
-#              ip: 10.11.45.116
-              file-extension: yaml
+spring:
+  main:
+    web-application-type: reactive  # 网关必须是响应式
+  application:
+    name: zero-trust-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
 
-          gateway:
-            routes:
-              - id: zero-trust-identity
-                uri: lb://zero-trust-identity
-                predicates:
-                  - Path=/identity/**
+    loadbalancer:
+      nacos:
+        enabled: true  # 启用 Nacos 负载均衡支持
+      ribbon:
+        enabled: false  # 禁用 Ribbon
 
-              - id: zero-trust-policy
-                uri: lb://zero-trust-policy
-                predicates:
-                  - Path=/policy/**
+    gateway:
+      discovery:
+        locator:
+          enabled: false  # 关闭自动发现路由
+      routes:
+        - id: zero-trust-identity
+          uri: lb://zero-trust-identity
+          predicates:
+            - Path=/identity/**
 
-      management:
-        endpoints:
-          web:
-            exposure:
-              include: '*'
+        - id: zero-trust-policy
+          uri: lb://zero-trust-policy
+          predicates:
+            - Path=/policy/**
+
+        - id: zero-trust-monitoring
+          uri: lb://zero-trust-monitoring
+          predicates:
+            - Path=/monitoring/**
+
+        - id: zero-trust-trusteval
+          uri: lb://zero-trust-trusteval
+          predicates:
+            - Path=/trusteval/**
+
+        - id: zero-trust-collecting
+          uri: lb://zero-trust-collecting
+          predicates:
+            - Path=/collecting/**
+
+
+
+
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
+    org.springframework.cloud.loadbalancer: TRACE
+    org.springframework.cloud.client.loadbalancer: TRACE
+    reactor.loadbalancer: DEBUG
+  reactor:
+    ipc.netty: DEBUG
+    pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
