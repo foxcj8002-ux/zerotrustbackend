@@ -59,4 +59,11 @@ public class Result<T> {
         r.setMessage(errorCode.getMessage());
         return r;
     }
+
+    public static Result<Void> fail(int code, String message) {
+        Result<Void> r = new Result<>();
+        r.setCode(code);
+        r.setMessage(message);
+        return r;
+    }
 }
