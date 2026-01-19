@@ -64,6 +64,13 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+<!--        opa-->
+        <dependency>
+            <groupId>com.bisnode.opa</groupId>
+            <artifactId>opa-java-client</artifactId>
+            <version>0.4.5</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -20,3 +20,7 @@ logging:
     org.springframework.cloud.openfeign: DEBUG
     org.springframework.beans.factory.support: DEBUG
     feign: DEBUG
+
+opa:
+  base-url: http://127.0.0.1:8181
+  policy-path: "my/policyrego/result"

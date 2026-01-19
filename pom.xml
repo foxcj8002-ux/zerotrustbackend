@@ -17,13 +17,13 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <modules>
+        <module>zero-trust-common</module>
         <module>zero-trust-monitoring</module>
         <module>zero-trust-trusteval</module>
         <module>zero-trust-policy</module>
         <module>zero-trust-gateway</module>
         <module>zero-trust-identity</module>
         <module>zero-trust-collecting</module>
-        <module>zero-trust-common</module>
     </modules>
 
     <dependencyManagement>
