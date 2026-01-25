@@ -11,10 +11,12 @@ import zerotrust.common.Response.Result;
 public class PolicyExceptionHandler {
     @ExceptionHandler(CommonException.class)
     public Result<Void> handleCommon(CommonException e) {
+        e.printStackTrace();
         return Result.fail(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(Exception.class)
     public Result<Void> handleOther(Exception e) {
+        e.printStackTrace();
         return Result.fail(ErrorCode.SERVER_ERROR.getCode(), "Server internal error");
     }
 }

@@ -1,0 +1,50 @@
+server:
+  port: 9000
+  address: 0.0.0.0
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: zero-trust-rgw
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
+
+    loadbalancer:
+      nacos:
+        enabled: true
+      ribbon:
+        enabled: false
+
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+
+      # A) 资源入口（只有 /res/** 一条）
+      routes:
+        - id: resource-entry
+          uri: http://127.0.0.1     # 占位：真正 upstream 在 Filter 里动态改写
+          predicates:
+            - Path=/res/**
+          filters:
+            - StripPrefix=1         # /res/** -> /**
+
+# B) 资源配置查询：通过 controller 内部网关去访问 /policy/resources/{id}
+zero-trust:
+  registry:
+    base-url: http://zero-trust-gateway:8002
+    resource-path-template: /policy/resources/{id}
+    timeout-ms: 2000
+    cache-ttl-seconds: 60
+    cache-max-size: 10000
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    reactor.netty.http.client: INFO

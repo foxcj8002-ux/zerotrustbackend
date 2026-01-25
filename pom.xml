@@ -24,6 +24,7 @@
         <module>zero-trust-gateway</module>
         <module>zero-trust-identity</module>
         <module>zero-trust-collecting</module>
+        <module>zero-trust-rgw</module>
     </modules>
 
     <dependencyManagement>
