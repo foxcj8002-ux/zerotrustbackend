@@ -8,15 +8,19 @@ spring:
   application:
     name: zero-trust-rgw
 
+  # R2DBC 响应式数据库
   r2dbc:
       url: r2dbc:mysql://127.0.0.1:3306/zerotrust_rgw
       username: root
       password: 1231234
+
+  # Redis 
   data:
     redis:
       host: 127.0.0.1
       port: 6379
       password: 
+
   cloud:
     nacos:
       discovery:
