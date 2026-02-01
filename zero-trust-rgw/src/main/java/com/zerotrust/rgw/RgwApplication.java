@@ -7,5 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RgwApplication {
     public static void main(String[] args) {
         SpringApplication.run(RgwApplication.class, args);
+        
     }
 }
