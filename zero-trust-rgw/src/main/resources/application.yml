@@ -1,13 +1,43 @@
 server:
-  port: 9000
+  port: 9527
   address: 0.0.0.0
+
+  max-http-header-size: 32768
+
+  netty:
+    # 这一行直接针对 Netty 报错的 root cause
+    max-initial-line-length: 65536 
+    max-header-size: 65536        
+
+  ssl:
+    enabled: true
+    # 网关对外的身份证明
+    key-store: /etc/gateway/certs/gateway-client.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    
+    # # 【开启 mTLS 关键】要求访问者（用户代理）也必须出示证书
+    # client-auth: need 
+    # trust-store: /etc/gateway/certs/truststore.p12
+    # trust-store-password: changeit
+    # trust-store-type: PKCS12
+
+logging:
+  level:
+    root: INFO
+    # 这一行是关键：显示 Netty 的详细二进制/文本流
+    # reactor.netty.http.server.HttpServer: INFO
+    # # 查看网关路由匹配详情
+    # org.springframework.cloud.gateway: TRACE
+    # org.springframework.cloud.alibaba.nacos: INFO
+    # org.springframework.boot: INFO
 
 spring:
   main:
     web-application-type: reactive
   application:
     name: zero-trust-rgw
-
+  
   # R2DBC 响应式数据库
   r2dbc:
       url: r2dbc:mysql://127.0.0.1:3306/zerotrust_rgw
@@ -22,12 +52,6 @@ spring:
       password: 
 
   cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
-        namespace: public
-        group: DEFAULT_GROUP
-
     loadbalancer:
       nacos:
         enabled: true
@@ -38,17 +62,23 @@ spring:
       discovery:
         locator:
           enabled: false
+      
+      httpserver:
+        wiretap: true  # 开启服务器端的流量监听
+      httpclient:
+        wiretap: true  # 开启作为客户端请求后端时的流量监听
 
-    
+      
 
+      
       # A) 资源入口（只有 /res/** 一条）
       routes:
         - id: resource-entry
-          uri: http://127.0.0.1     # 占位：真正 upstream 在 Filter 里动态改写
+          uri: no://op    # 占位：真正 upstream 在 Filter 里动态改写
           predicates:
             - Path=/res/**
-          filters:
-            - StripPrefix=1         # /res/** -> /**
+          filters: [ ]
+                    
 
 # B) 资源配置查询：通过 controller 内部网关去访问 /policy/resources/{id}
 zero-trust:
@@ -59,7 +89,19 @@ zero-trust:
     cache-ttl-seconds: 60
     cache-max-size: 10000
 
-logging:
-  level:
-    org.springframework.cloud.gateway: INFO
-    reactor.netty.http.client: INFO
+
+
+# JWT 配置
+jwt:
+  certificate-path: /etc/gateway/certs/casdoor-cert.pem
+gateway:
+  mtls:
+    enabled: true
+    # 证书存放路径
+    key-store-path: /etc/gateway/certs/gateway-client.p12
+    key-store-password: changeit
+    trust-store-path: /etc/gateway/certs/truststore.p12
+    trust-store-password: changeit
+  safety:
+    allowed-hosts: ${GATEWAY_ALLOWED_HOSTS:127.0.0.1,localhost,192.168.0.111,www.baidu.com,jsonplaceholder.typicode.com,www.bing.com,reqres.in,api.github.com,en.wikipedia.org,httpbin.org} 
+

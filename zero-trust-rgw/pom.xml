@@ -38,7 +38,17 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+        <!-- Nacos 配置中心依赖 (实现动态配置热更新的关键) -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        
          <!-- Redis 响应式客户端 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,7 +68,7 @@
 
           <!-- JWT -->
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
+            <groupId>io.jsonwebtoken</groupId> 
             <artifactId>jjwt-api</artifactId>
             <version>0.11.5</version>
         </dependency>
@@ -79,6 +89,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
 
@@ -88,6 +99,12 @@
             <artifactId>zero-trust-common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+                <groupId>me.paulschwarz</groupId>
+                <artifactId>spring-dotenv</artifactId>
+                <version>4.0.0</version>
         </dependency>
 
          <!-- 公共模块 (排除 Web 依赖) -->
@@ -108,5 +125,61 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Frontend Maven Plugin for Playwright (skip by default, use -Pplaywright to enable) -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.0</version>
+                <configuration>
+                    <skip>true</skip>
+                    <workingDirectory>${project.basedir}/src/test/playwright</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>playwright install</id>
+                        <goals>
+                            <goal>npx</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>playwright install chromium --with-deps</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>playwright test</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <arguments>run test</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Surefire plugin for running tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

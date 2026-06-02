@@ -1,0 +1,36 @@
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Build
+target/
+*/target/
+**/target/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+test-results/
+node/
+
+# Certificates (do not commit secrets)
+*.p12
+*.pem
+*.jks
+*.keystore
+*.truststore
+
+# Misc
+*.bak
+*.swp
+*~
