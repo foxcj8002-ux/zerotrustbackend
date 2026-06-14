@@ -94,6 +94,7 @@ zero-trust:
 # JWT 配置
 jwt:
   certificate-path: /etc/gateway/certs/casdoor-cert.pem
+  
 gateway:
   mtls:
     enabled: true

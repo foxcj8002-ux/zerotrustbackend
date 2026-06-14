@@ -74,7 +74,19 @@ public class JwtUtils {
             return null;
         }
     }
-    
+
+    /**
+     * 从 JWT 中解析 clientType（可选 claim，可能为空）
+     */
+    public String getClientType(String token) {
+        try {
+            return parseToken(token).get("clientType", String.class);
+        } catch (Exception e) {
+            log.debug("解析 clientType 失败（claim 可能不存在）", e);
+            return null;
+        }
+    }
+
     public boolean validateToken(String token) {
         try {
             parseToken(token);
