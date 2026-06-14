@@ -85,23 +85,11 @@ public class ZeroTrustAccessFilter implements GlobalFilter, Ordered {
         }
 
         String subjectId = jwtUtils.getUserId(token);
-        String tokenResourceId = jwtUtils.getResourceId(token);
         String jwtClientType = jwtUtils.getClientType(token);
 
         if (!StringUtils.hasText(subjectId)) {
             log.warn("JWT 缺少主体标识");
             return unauthorized(exchange, "Missing Subject In Token");
-        }
-
-        if (!StringUtils.hasText(tokenResourceId)) {
-            log.warn("JWT 缺少资源标识");
-            return unauthorized(exchange, "Missing Resource In Token");
-        }
-
-        if (!tokenResourceId.equals(resourceId)) {
-            log.warn("资源标识不匹配: tokenResourceId={}, requestResourceId={}",
-                    tokenResourceId, resourceId);
-            return forbidden(exchange, "Resource ID Mismatch");
         }
 
         return policyService.getAndValidatePolicy(
@@ -111,7 +99,14 @@ public class ZeroTrustAccessFilter implements GlobalFilter, Ordered {
                         requestAction,
                         jwtClientType,
                         requestFingerprint)
-                .flatMap(policy -> resourceRepository.findByResourceId(resourceId))
+                .flatMap(decision -> {
+                    if (!decision.getResourceId().equals(resourceId)) {
+                        return Mono.error(new AccessDeniedException(
+                                "Resource ID Mismatch"));
+                    }
+                    return Mono.just(decision);
+                })
+                .flatMap(decision -> resourceRepository.findByResourceId(resourceId))
                 .switchIfEmpty(Mono.error(new AccessDeniedException(
                         "Access Denied: Unauthorized or Resource not found")))
                 .flatMap(resource -> forward(exchange, chain, resource.getResourceUrl(), resourceId))
